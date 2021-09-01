@@ -50,10 +50,9 @@ functions:
     events: # The Events that trigger this Function
       - schedule: cron(0/15 * * * ? *)
     environment:
-      city: ${param:city}
+      grid: ${param:grid}
       DATA_BUCKET: ${self:resources.Outputs.oDataBucket.Value}
       region: ${opt:region, "us-east-2"}
-      SecretsManager: ${param:SecretsManager}
 
 resources:
   Resources:
