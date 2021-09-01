@@ -1,5 +1,5 @@
 app: weather
-service: weather-collector
+service: forecast
 
 plugins:
   - serverless-python-requirements
@@ -38,7 +38,7 @@ provider:
 
 functions:
   weather: # A Function
-    name: ${self:service}-${self:provider.stage}
+    name: ${self:app}-${self:service}-${self:provider.stage}
     handler: weather.lambda_handler # The file and module for this specific function. Cannot be used when `image` is defined.
     description: Weather Function to gather weather data # The description of your function.
     disableLogs: false # Disables creation of CloudWatch Log Group
