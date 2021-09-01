@@ -50,8 +50,9 @@ functions:
     events: # The Events that trigger this Function
       - schedule: cron(0/15 * * * ? *)
     environment:
-      grid: ${param:grid}
       DATA_BUCKET: ${self:resources.Outputs.oDataBucket.Value}
+      grid: ${param:grid}
+      headers: ${param:headers}
       region: ${opt:region, "us-east-2"}
 
 resources:
