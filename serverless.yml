@@ -1,5 +1,5 @@
 app: weather
-service: forecast
+service: forecast # will add more services later.
 
 plugins:
   - serverless-python-requirements
