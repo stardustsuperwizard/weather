@@ -1,0 +1,79 @@
+app: weather
+service: weather-collector
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - package.json
+    - package-lock.json
+    - requirements.txt
+    - node_modules/**
+    - tests/**
+
+projectDir: ./
+
+provider:
+  name: aws
+  runtime: python3.8 # Python and version
+  stage: ${opt:stage, "dev"} # Default stage to be used. Default is "dev"
+  region: ${opt:region, "us-east-2"} # Default region to be used. Default is "us-east-1"
+#   profile: ${opt:profile, "default"}
+  stackTags: # Tags that will get pushed to all resources
+    project: ${self:app}
+  memorySize: 512 # Overwrite the default memory size. Default is 1024
+  deploymentPrefix: serverless # The S3 prefix under which deployed artifacts should be stored. Default is serverless
+  # deploymentBucket:
+  #   name: ${output:${self:app}-shared.S3SharedBucketArtifactsName}
+  iam:
+    role:
+      statements: # permissions for all of your functions can be set here
+        - Effect: Allow
+          Action: # Gives permission to DynamoDB tables in a specific region
+            - s3:PutObject
+            - secretsmanager:GetSecretValue
+          Resource: '*'
+          Sid: LambdaPermissions
+
+functions:
+  weather: # A Function
+    name: ${self:service}-${self:provider.stage}
+    handler: weather.lambda_handler # The file and module for this specific function. Cannot be used when `image` is defined.
+    description: Weather Function to gather weather data # The description of your function.
+    disableLogs: false # Disables creation of CloudWatch Log Group
+#     tags: # Function specific tags
+#       project: weather
+#     package:
+#       patterns: # Specify the directories and files which should be included in the deployment package for this specific function.
+#         - src/**
+    events: # The Events that trigger this Function
+      - schedule: cron(0/15 * * * ? *)
+    environment:
+      city: ${param:city}
+      DATA_BUCKET: ${self:resources.Outputs.oDataBucket.Value}
+      region: ${opt:region, "us-east-2"}
+      SecretsManager: ${param:SecretsManager}
+
+resources:
+  Resources:
+    DataBucket:
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
+      Properties:
+        BucketEncryption: 
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: aws:kms
+                KMSMasterKeyID: ${param:kmsARN}
+              BucketKeyEnabled: true
+  Outputs:
+    oDataBucket:
+      Description: "The ARN of the S3 Bucket"
+      Value:
+        Ref: DataBucket
+
+outputs:
+  DataBucketName:
+    Ref: DataBucket
+  Function: ${self:functions.weather}

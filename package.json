@@ -1,0 +1,27 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "gathers data about the weather for Athena querying.",
+  "main": "weather.py",
+  "scripts": {
+    "install": "pip install boto3 requests",
+    "test": "python -m unittest discover -s tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stardustsuperwizard/weather"
+  },
+  "keywords": [
+    "weather",
+    "python"
+  ],
+  "author": "Michael Miller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stardustsuperwizard/weather/issues"
+  },
+  "homepage": "https://github.com/stardustsuperwizard/weather#readme",
+  "dependencies": {
+    "serverless-python-requirements": "latest"
+  }
+}
