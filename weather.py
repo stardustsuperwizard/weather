@@ -76,7 +76,7 @@ def lambda_handler(event, context):
     for location in locations:
         data = get_weather_forecast(location['gridId'], location['gridX'], location['gridY'], os.environ['headers'])
         if data:
-            s3_key = f"data/{now}/{location['name'].replace(' ','')}-{uuid.uuid4()}.json.gz"
+            s3_key = f"data/{now}/{location['city'].replace(' ','')}-{uuid.uuid4()}.json.gz"
             print(s3_key)
             response = put_data_s3(json.dumps(data), s3_key, s3)
             print(response)
