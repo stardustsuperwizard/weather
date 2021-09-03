@@ -76,7 +76,7 @@ resources:
           - AttributeName: "locationId"
             AttributeType: "S"
         KeySchema:
-          - AttributeName: "ArtistId"
+          - AttributeName: "locationId"
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 2
