@@ -13,7 +13,7 @@ DATA_BUCKET = os.environ['DATA_BUCKET']
 
 def get_locations():
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.enivron['LOCATION_TABLE'])
+    table = dynamodb.Table(os.environ['LOCATION_TABLE'])
     
     data = []
 
