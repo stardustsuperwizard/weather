@@ -52,6 +52,7 @@ functions:
         enabled: false
     environment:
       DATA_BUCKET: ${self:resources.Outputs.oDataBucket.Value}
+      LOCATION_TABLE: ${self:resources.Outputs.oLocationTable.Value}
       grid: ${param:grid}
       headers: ${param:headers}
       region: ${opt:region, "us-east-2"}
@@ -68,13 +69,33 @@ resources:
                 SSEAlgorithm: aws:kms
                 KMSMasterKeyID: ${param:kmsARN}
               BucketKeyEnabled: true
+    LocationTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "locationId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "ArtistId"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 1
+
   Outputs:
     oDataBucket:
       Description: "The ARN of the S3 Bucket"
       Value:
         Ref: DataBucket
+    oLocationTable:
+      Description: "Where each location that the lambda is going to look up is stored."
+      Value:
+        Ref: LocationTable
 
 outputs:
   DataBucketName:
     Ref: DataBucket
+  LocationTable:
+    Ref: LocationTable
   Function: ${self:functions.weather}
+
