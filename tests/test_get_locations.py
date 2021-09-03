@@ -6,6 +6,7 @@ from unittest.mock import Mock, patch
 
 # Setup Environment and import script
 os.environ['DATA_BUCKET'] = 'test-bucket'
+os.environ['LOCATION_TABLE'] = 'test-table'
 from weather import get_locations
 
 class TestHandler(unittest.TestCase):
