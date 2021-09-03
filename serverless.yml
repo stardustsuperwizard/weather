@@ -69,6 +69,10 @@ resources:
                 SSEAlgorithm: aws:kms
                 KMSMasterKeyID: ${param:kmsARN}
               BucketKeyEnabled: true
+        Tags:
+          - Key: project
+            Value: ${self:app}
+
     LocationTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -79,8 +83,11 @@ resources:
           - AttributeName: "locationId"
             KeyType: "HASH"
         ProvisionedThroughput:
-          ReadCapacityUnits: 2
+          ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        Tags:
+          - Key: project
+            Value: ${self:app}
 
   Outputs:
     oDataBucket:
