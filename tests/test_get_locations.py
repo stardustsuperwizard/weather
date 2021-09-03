@@ -2,22 +2,18 @@ import botocore
 import os
 import unittest
 
-from botocore.stub import ANY, Stubber
+# from botocore.stub import ANY, Stubber
 from unittest.mock import Mock, patch
 
 # Setup Environment and import script
 os.environ['DATA_BUCKET'] = 'test-bucket'
-from weather import get_weather_grid
-
+from weather import get_locations
 
 class TestHandler(unittest.TestCase):
     """Test handler methods"""
 
-    # def setUp(self):
-    #     self.client = botocore.session.get_session().create_resource('dynamodb')
-    #     self.stubber = Stubber(self.client)
 
-    @patch('boto3.resource')
+    @patch('weather.boto3.resource')
     def test_return(self, mock_dynamo):
         service_response = {
             'Items': [
@@ -59,5 +55,5 @@ class TestHandler(unittest.TestCase):
 
         mock_dynamo.return_value.Table.return_value = mock_table
 
-        response = get_weather_grid()
+        response = get_locations()
         self.assertEqual(response, [{'string': 'string'}])

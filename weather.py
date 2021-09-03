@@ -11,7 +11,7 @@ from botocore.exceptions import ClientError
 DATA_BUCKET = os.environ['DATA_BUCKET']
 
 
-def get_weather_grid():
+def get_locations():
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('weather-locations')
     
@@ -72,7 +72,7 @@ def lambda_handler(event, context):
     now = datetime.datetime.now().strftime("%Y/%m/%d")
     s3 = boto3.client('s3')
 
-    locations = get_weather_grid()
+    locations = get_locations()
     for location in locations:
         data = get_weather_forecast(location['office'], location['grid_x'], location['grid_y'], os.environ['headers'])
         if data:
