@@ -65,5 +65,4 @@ class TestHandler(unittest.TestCase):
         mock_s3.put_object.return_value = service_response
 
         response = put_data_s3("{\"key\": \"value\"}", 'data/WashgintonMonument-596520c0-e258-4907-a13f-df33ce0d4651.json.gz', mock_s3)
-        print(response)
         self.assertEqual(service_response, response)
