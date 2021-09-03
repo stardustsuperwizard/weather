@@ -12,7 +12,29 @@ DATA_BUCKET = os.environ['DATA_BUCKET']
 
 
 def get_weather_grid():
-    return json.loads(os.environ['grid'])
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('weather-locations')
+    
+    data = []
+
+    try:
+        response = table.scan()
+    except Exception as err:
+        print(err)
+        return []
+    else:
+        data.extend(response['Items'])
+
+    while response.get('LastEvaluatedKey'):
+        try:
+            response = table.scan(ExclusiveStartKey=last_key)
+        except Exception as err:
+            print(err)
+            break
+        else:
+            data.extend(response['Items'])
+    
+    return data
 
 
 def get_weather_forecast(office, grid_x, grid_y, user_agent):
