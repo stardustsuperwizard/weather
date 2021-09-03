@@ -49,6 +49,7 @@ functions:
 #         - src/**
     events: # The Events that trigger this Function
       - schedule: cron(0/15 * * * ? *)
+        enabled: false
     environment:
       DATA_BUCKET: ${self:resources.Outputs.oDataBucket.Value}
       grid: ${param:grid}
