@@ -18,7 +18,7 @@ class TestHandler(unittest.TestCase):
 
     def test_lambda_handler(self, mock_client, mock_get_locations, mock_get_weather_forecast, mock_put_data_s3):
         mock_client.return_value = Mock()
-        mock_get_locations.return_value = [{'office': 'test', 'grid_x': '1', 'grid_y': '1', 'name': 'test'}]
+        mock_get_locations.return_value = [{'girdId': 'test', 'gridX': '1', 'gridY': '1', 'city': 'test'}]
         mock_get_weather_forecast.return_value = {'test': 'foobar'}
        
         lambda_handler({'event': 'foobar'}, {'hello': 'world'})
@@ -40,7 +40,7 @@ class TestHandler(unittest.TestCase):
 
     def test_get_weather_forecast_return_empty(self, mock_client, mock_get_locations, mock_get_weather_forecast, mock_put_data_s3):
         mock_client.return_value = Mock()
-        mock_get_locations.return_value = [{'office': 'test', 'grid_x': '1', 'grid_y': '1', 'name': 'test'}]
+        mock_get_locations.return_value = [{'girdId': 'test', 'gridX': '1', 'gridY': '1', 'city': 'test'}]
         mock_get_weather_forecast.return_value = None
 
         lambda_handler({'event': 'foobar'}, {'hello': 'world'})
