@@ -49,7 +49,7 @@ functions:
 #       patterns: # Specify the directories and files which should be included in the deployment package for this specific function.
 #         - src/**
     events: # The Events that trigger this Function
-      - schedule: cron(0/15 * * * ? *)
+      - schedule: cron(0 4 * * ? *)
         enabled: false
     environment:
       DATA_BUCKET: ${self:resources.Outputs.oDataBucket.Value}
